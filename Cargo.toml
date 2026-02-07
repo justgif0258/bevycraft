@@ -30,7 +30,9 @@ derive_builder = "0.20.2"
 const-builder = "0.1.5"
 
 phf = { version = "0.13.1", features = ["macros"] }
+frozen-collections = { version = "0.8.0", features = ["macros"] }
 
+rkyv = { version = "0.8.14", features = ["bytecheck"] }
 heed = "0.22.1-nested-rtxns-6"
 
 criterion = "0.8.1"

@@ -1,7 +1,7 @@
 mod block;
 mod morton;
 mod chunk;
-mod dfso;
+mod spatial;
 
 pub mod prelude {
     pub use crate::block::{
@@ -11,10 +11,11 @@ pub mod prelude {
             BehaviourTrait
         },
     };
-    pub use crate::dfso::{
-        node_id::NodeId,
-    };
     pub use crate::morton::morton_3d::*;
+    pub use crate::spatial::{
+        child_descriptor::ChildDescriptor,
+        svo::Svo,
+    };
 }
 
 pub mod presets {

@@ -14,7 +14,7 @@ impl<T: PartialEq + Eq> Section<T> {
 
     pub fn new(y: usize) -> Self {
         Self {
-            states: PackedArrayU32::zeroed(Self::SECTION_LEN),
+            states: PackedArrayU32::zeroed(),
             content: Vec::new(),
             y,
         }
@@ -23,8 +23,7 @@ impl<T: PartialEq + Eq> Section<T> {
     #[inline]
     pub fn set(&mut self, pos: UVec3, state: T) {
         if self.states.is_empty() {
-            self.states.allocate()
-                .expect("Failed to allocate array");
+            self.states.allocate(Self::SECTION_LEN);
         }
 
         let idx = self.content.len();
@@ -36,7 +35,7 @@ impl<T: PartialEq + Eq> Section<T> {
     #[inline]
     pub fn get(&self, pos: UVec3) -> Option<&T> {
         if self.states.is_empty() {
-            return None;
+            return self.content.first();
         }
 
         let idx = self.states.get(Self::map_to_flat_index(pos));
@@ -44,7 +43,10 @@ impl<T: PartialEq + Eq> Section<T> {
         self.content.get(idx as usize)
     }
 
-    const fn map_to_flat_index(pos: UVec3) -> usize {
+    #[inline]
+    fn map_to_flat_index(pos: UVec3) -> usize {
+        debug_assert!(pos.cmplt(Self::SECTION_SIZE).all(), "Tried indexing out of the section boundaries");
+
         (pos.x + (pos.z * Self::SECTION_SIZE.x) + (pos.y * Self::SECTION_SIZE.x * Self::SECTION_SIZE.z)) as usize
     }
 }

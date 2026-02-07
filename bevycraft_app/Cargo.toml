@@ -11,6 +11,8 @@ bevy.workspace = true
 
 phf.workspace = true
 
+rkyv.workspace = true
+
 criterion.workspace = true
 
 [[bench]]

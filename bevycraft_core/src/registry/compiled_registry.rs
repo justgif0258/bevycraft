@@ -2,17 +2,15 @@ use std::hash::Hash;
 use std::marker::PhantomData;
 
 pub struct CompiledRegistry<T: Send + Sync + 'static> {
-    namespace: &'static str,
     entries: phf::OrderedMap<&'static str, T>,
     _marker: PhantomData<T>,
 }
 
 impl<T: Send + Sync + 'static> CompiledRegistry<T> {
     pub const fn new(
-        namespace: &'static str,
         entries: phf::OrderedMap<&'static str, T>,
     ) -> Self {
-        Self { namespace, entries, _marker: PhantomData }
+        Self { entries, _marker: PhantomData }
     }
 
     #[inline]
@@ -42,12 +40,5 @@ impl<T: Send + Sync + 'static> CompiledRegistry<T> {
     #[inline]
     pub const fn len(&self) -> usize {
         self.entries.len()
-    }
-}
-
-impl<T: Send + Sync + 'static> Hash for CompiledRegistry<T> {
-    #[inline]
-    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.namespace.hash(state);
     }
 }

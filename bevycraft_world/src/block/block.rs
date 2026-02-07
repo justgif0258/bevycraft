@@ -1,6 +1,7 @@
 use const_builder::ConstBuilder;
+use rkyv::{Archive, Deserialize, Serialize};
 
-#[derive(Debug)]
+#[derive(Archive, Deserialize, Serialize, Debug)]
 pub struct Block {
     properties: BlockBehaviour,
 }
@@ -58,7 +59,7 @@ impl BehaviourTrait for Block {
     }
 }
 
-#[derive(ConstBuilder, Debug)]
+#[derive(ConstBuilder, Archive, Deserialize, Serialize, Debug)]
 #[builder(rename = "BehaviourBuilder")]
 pub struct BlockBehaviour {
     #[builder(default = 1.0)]

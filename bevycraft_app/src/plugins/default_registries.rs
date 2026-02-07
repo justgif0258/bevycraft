@@ -1,11 +1,10 @@
-use phf::phf_ordered_map;
+use crate::prelude::*;
 use bevycraft_core::prelude::*;
 use bevycraft_world::prelude::*;
 use bevycraft_world::presets::*;
-use crate::prelude::*;
+use phf::phf_ordered_map;
 
 pub static BLOCKS: CompiledRegistry<Block> = CompiledRegistry::new(
-    GameRegistries::DEFAULT_NAMESPACE,
     phf_ordered_map!(
         "stone" => STONE_BLOCK,
         "cobblestone" => COBBLESTONE_BLOCK,

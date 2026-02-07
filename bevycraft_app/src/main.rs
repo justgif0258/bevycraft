@@ -1,24 +1,24 @@
 use bevy::prelude::*;
 use bevycraft_app::prelude::*;
-use bevycraft_core::prelude::{Namespace, Path, ResourceId};
+use bevycraft_core::prelude::*;
 use bevycraft_world::prelude::*;
 
-const DEFAULT_NAMESPACE: Namespace = Namespace::new("bevycraft");
-
 fn main() {
-    let path = Path::new("stone");
+    let mut packed = PackedArrayU32::with_bit_length(4096, 12);
 
-    println!("{}", path.prefix("block/"));
+    println!("{:?}", packed);
 
+    /*
     App::new()
         .add_plugins(DefaultPlugins)
         .insert_resource(GameRegistries::default())
         .add_systems(Startup, init)
         .run();
+    */
 }
 
 fn init(root: Res<GameRegistries>) {
-    let result = root.get_registered::<Block>(&ResourceId::parse("oak_leaves"));
+    let result = root.get_registered::<Block>(&ResourceId::parse("cobblestone").unwrap());
 
     println!("{:#?}", result);
 }

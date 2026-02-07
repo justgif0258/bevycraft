@@ -65,7 +65,7 @@ impl RegistriesBuilder {
     }
     
     #[inline]
-    pub fn remove_registry<T: Send + Sync + 'static>(&mut self, namespace: &'static str) {
+    pub fn remove_registry<T: Send + Sync + 'static>(&mut self, namespace: &str) {
         if let Some(solver) = self.registries.get_mut(namespace) {
             solver.remove_registry::<T>()
         }

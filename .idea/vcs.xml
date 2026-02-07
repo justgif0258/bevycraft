@@ -2,9 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/bevycraft_app" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/bevycraft_core" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/bevycraft_render" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/bevycraft_world" vcs="Git" />
   </component>
 </project>
