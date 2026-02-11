@@ -1,3 +1,4 @@
+use std::hash::{Hash, Hasher};
 use bevy::math::*;
 
 pub trait MortonEncodable {
@@ -10,8 +11,28 @@ pub trait MortonDecodable {
 
 const MORTON_INDEX_MASK: u64 = 0x7;
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Morton3D(u64);
+
+impl From<u64> for Morton3D {
+    fn from(value: u64) -> Self {
+        Self(value)
+    }
+}
+
+impl From<Morton3D> for u64 {
+    fn from(value: Morton3D) -> Self {
+        value.0
+    }
+}
+
+impl Hash for Morton3D {
+    
+    #[inline]
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        state.write_u64(self.0)
+    }
+}
 
 impl Morton3D {
     
@@ -24,10 +45,17 @@ impl Morton3D {
     pub fn decode<T: MortonDecodable>(&self) -> T {
         T::decode_u64(self.0)
     }
+    
+    #[inline]
+    pub const fn raw(&self) -> u64 {
+        self.0
+    }
 
     #[inline]
-    pub fn get_morton_index(&self, index: usize) -> usize {
-        ((self.0 >> index * 3) & MORTON_INDEX_MASK) as usize
+    pub const fn get_morton_index(&self, index: usize) -> usize {
+        debug_assert!(index <= 21, "A Morton can only hold 21 indices");
+        
+        unsafe { ((self.0 >> index.unchecked_mul(3)) & MORTON_INDEX_MASK) as usize }
     }
 
     #[inline]
@@ -120,17 +148,5 @@ impl MortonDecodable for (i32, i32, i32) {
             Morton3D::join_bits(morton >> 1) as i32,
             Morton3D::join_bits(morton >> 2) as i32,
         )
-    }
-}
-
-impl From<u64> for Morton3D {
-    fn from(value: u64) -> Self {
-        Self(value)
-    }
-}
-
-impl From<Morton3D> for u64 {
-    fn from(value: Morton3D) -> Self {
-        value.0
     }
 }
